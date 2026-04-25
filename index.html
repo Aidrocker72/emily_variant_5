@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emily — Content Creator</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --surface: #f8f8f6;
+    --dark: #131313;
+    --accent: #ff5a1f;
+    --accent2: #ffb800;
+    --text: #131313;
+    --muted: #9a9a9a;
+    --border: #ebebeb;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Arial', 'Helvetica Neue', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-decoration: none;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-book {
+    padding: 9px 22px;
+    background: var(--dark);
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 30px;
+    transition: background 0.2s;
+  }
+  .nav-book:hover { background: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding-top: 64px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-left: 48px;
+    padding-right: 48px;
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .hero-bg-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.12;
+  }
+
+  .shape-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; }
+  .shape-2 { width: 400px; height: 400px; background: var(--accent2); bottom: -80px; left: -80px; }
+
+  .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    background: var(--dark);
+    color: white;
+    border-radius: 30px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .chip-icon {
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .chip-icon svg { fill: white; }
+
+  .hero h1 {
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    max-width: 900px;
+  }
+
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-btns { display: flex; gap: 12px; justify-content: center; margin-bottom: 80px; flex-wrap: wrap; }
+
+  .btn-dark {
+    padding: 14px 32px;
+    background: var(--dark);
+    color: white;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .btn-dark:hover { background: var(--accent); }
+
+  .btn-light {
+    padding: 14px 32px;
+    background: var(--bg);
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .btn-light:hover { border-color: var(--dark); }
+
+  /* PHONE STRIP */
+  .phones-strip {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+  }
+
+  .p-card {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .p-phone {
+    width: 150px;
+    background: var(--dark);
+    border-radius: 28px;
+    border: 2px solid rgba(255,255,255,0.08);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .p-phone::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    width: 44px; height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    z-index: 10;
+  }
+
+  .p-screen {
+    aspect-ratio: 9/19;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .p-screen img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s;
+  }
+  .p-card:hover .p-screen img { transform: scale(1.04); }
+
+  .p-screen-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 12px 10px;
+    pointer-events: none;
+  }
+
+  .p-label {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+
+  .p-name {
+    font-size: 0.65rem;
+    color: white;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .p-card.main .p-phone {
+    width: 175px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.25), 0 0 0 3px var(--accent);
+  }
+
+  .p-badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  /* PLATFORMS */
+  .platforms {
+    background: var(--dark);
+    padding: 20px 56px;
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .platform-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .platform-icon {
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  /* SHORTS GRID */
+  #shorts { padding: 100px 56px; }
+
+  .section-head {
+    margin-bottom: 56px;
+  }
+
+  .s-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .section-head h2 {
+    font-size: 2.8rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .section-head p { color: var(--muted); margin-top: 12px; font-size: 0.9rem; }
+
+  .shorts-scroll {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .sc {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+  .sc:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  }
+
+  .sc-thumb {
+    aspect-ratio: 9/16;
+    overflow: hidden;
+    background: var(--border);
+    position: relative;
+  }
+
+  .sc-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .sc:hover .sc-thumb img { transform: scale(1.05); }
+
+  .sc-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.25);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .sc:hover .sc-play { opacity: 1; }
+
+  .sc-play-btn {
+    width: 48px; height: 48px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .sc-play-btn svg { fill: var(--accent); margin-left: 4px; }
+
+  .sc-type {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: rgba(0,0,0,0.65);
+    color: white;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+  }
+
+  .sc-body {
+    padding: 12px;
+  }
+
+  .sc-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .sc-meta {
+    font-size: 0.7rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* VIDEO */
+  #video { padding: 0; }
+
+  .video-full {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+    background: var(--dark);
+  }
+
+  .vf-text-side {
+    padding: 80px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+  }
+
+  .vf-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .vf-text-side h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+
+  .vf-text-side p { color: rgba(255,255,255,0.5); font-size: 0.92rem; line-height: 1.8; margin-bottom: 32px; }
+
+  /* dual video */
+  .vf-video-side {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .video-box {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .video-box-label {
+    padding: 10px 16px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .video-box-label span {
+    color: var(--accent);
+    font-size: 0.6rem;
+    padding: 2px 8px;
+    border: 1px solid rgba(255,90,31,0.3);
+    border-radius: 4px;
+  }
+
+  .video-container-h {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .video-container-h iframe,
+  .video-container-h video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .video-placeholder-h {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #0a0a0a;
+  }
+
+  .video-placeholder-h img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+  }
+
+  .vph-play {
+    position: relative;
+    width: 56px; height: 56px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .video-placeholder-h:hover .vph-play { transform: scale(1.1); }
+  .vph-play svg { fill: white; margin-left: 4px; }
+
+  /* shorts video box */
+  .video-container-v {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    background: #0a0a0a;
+  }
+
+  .vertical-phone {
+    width: 120px;
+    background: #000;
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+  }
+  .vertical-phone::before {
+    content: '';
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    width: 32px; height: 3px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 2px;
+    z-index: 10;
+  }
+
+  .vp-s {
+    aspect-ratio: 9/16;
+    overflow: hidden;
+    position: relative;
+  }
+  .vp-s iframe, .vp-s video {
+    width: 100%; height: 100%;
+    border: none;
+    object-fit: cover;
+  }
+  .vp-s-ph {
+    width: 100%; height: 100%;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .vp-s-ph p { font-size: 0.55rem; color: rgba(255,255,255,0.3); text-align: center; line-height: 1.4; }
+
+  .vbox-input-row {
+    padding: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    gap: 6px;
+  }
+  .vbox-input-row input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: white;
+    padding: 8px 12px;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.72rem;
+    outline: none;
+    border-radius: 4px;
+  }
+  .vbox-input-row input::placeholder { color: rgba(255,255,255,0.25); }
+  .vbox-input-row input:focus { border-color: var(--accent); }
+  .vbox-input-row button {
+    padding: 8px 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* ABOUT + CONTACT */
+  .split-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .split-about {
+    padding: 80px 56px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+  }
+
+  .split-about .s-tag { display: block; margin-bottom: 16px; }
+
+  .split-about h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  .split-about p { color: var(--muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: 14px; }
+
+  .creator-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .c-tag {
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .c-tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(255,90,31,0.05); }
+
+  .avail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+
+  .avail-green {
+    width: 9px; height: 9px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse2 2s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse2 {
+    0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  }
+
+  .split-contact {
+    padding: 80px 56px;
+    background: var(--bg);
+  }
+
+  .split-contact .s-tag { display: block; margin-bottom: 16px; }
+
+  .split-contact h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+
+  .cf5 { display: flex; flex-direction: column; gap: 12px; }
+
+  .cf5 input, .cf5 textarea {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 13px 16px;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    border-radius: 8px;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .cf5 input::placeholder, .cf5 textarea::placeholder { color: var(--muted); }
+  .cf5 input:focus, .cf5 textarea:focus { border-color: var(--accent); }
+  .cf5 textarea { min-height: 110px; resize: vertical; }
+
+  .cf5 button {
+    padding: 14px;
+    background: var(--dark);
+    color: white;
+    border: none;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  .cf5 button:hover { background: var(--accent); }
+
+  .direct-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .dl-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+  }
+  .dl-link:hover { color: var(--accent); }
+  .dl-icon {
+    width: 34px; height: 34px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 28px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* LIGHTBOX */
+  .lb { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; }
+  .lb.on { display: flex; }
+  .lb img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 8px; }
+  .lb-x { position: absolute; top: 20px; right: 28px; background: none; border: none; color: rgba(255,255,255,0.4); font-size: 2rem; cursor: pointer; }
+  .lb-x:hover { color: white; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 80px 24px 40px; }
+    .phones-strip { gap: 8px; }
+    .p-phone { width: 100px; }
+    .p-card.main .p-phone { width: 120px; }
+    .platforms { padding: 16px 24px; gap: 20px; }
+    #shorts { padding: 70px 24px; }
+    .shorts-scroll { grid-template-columns: repeat(2, 1fr); }
+    .video-full { grid-template-columns: 1fr; }
+    .vf-text-side, .vf-video-side { padding: 60px 24px; }
+    .split-section { grid-template-columns: 1fr; }
+    .split-about, .split-contact { padding: 60px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+    footer { flex-direction: column; gap: 8px; padding: 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo"><div class="logo-dot"></div>Emily</a>
+  <ul class="nav-links">
+    <li><a href="#shorts">Shorts</a></li>
+    <li><a href="#video">Видео</a></li>
+    <li><a href="#about">Обо мне</a></li>
+    <li><a href="#contact">Контакт</a></li>
+  </ul>
+  <a href="#contact" class="nav-book">Заказать съёмку</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+  <div class="hero-chip">
+    <div class="chip-icon">
+      <svg width="10" height="10" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    Shorts · Reels · TikTok
+  </div>
+  <h1>Фотограф<br>для <span class="accent">вертикального</span><br>мира</h1>
+  <p class="hero-sub">Создаю контент для Shorts и Reels — портрет, арт, репортаж. Снимаю то, что хочется досмотреть до конца.</p>
+  <div class="hero-btns">
+    <a href="#shorts" class="btn-dark">Смотреть работы</a>
+    <a href="#contact" class="btn-light">Обсудить проект</a>
+  </div>
+
+  <div class="phones-strip">
+    <div class="p-card">
+      <div class="p-phone">
+        <div class="p-screen">
+          <img src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=400&q=80" alt="">
+          <div class="p-screen-overlay">
+            <p class="p-label">Shorts</p>
+            <p class="p-name">Летняя серия</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-card main">
+      <div class="p-badge">★ 1.2M просмотров</div>
+      <div class="p-phone">
+        <div class="p-screen">
+          <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80" alt="">
+          <div class="p-screen-overlay">
+            <p class="p-label">Reels · Топ</p>
+            <p class="p-name">Золотой час · Анна</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-card">
+      <div class="p-phone">
+        <div class="p-screen">
+          <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80" alt="">
+          <div class="p-screen-overlay">
+            <p class="p-label">TikTok</p>
+            <p class="p-name">Арт-концепт</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-card">
+      <div class="p-phone">
+        <div class="p-screen">
+          <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&q=80" alt="">
+          <div class="p-screen-overlay">
+            <p class="p-label">Shorts</p>
+            <p class="p-name">Красный · Арт</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-card">
+      <div class="p-phone">
+        <div class="p-screen">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80" alt="">
+          <div class="p-screen-overlay">
+            <p class="p-label">Reels</p>
+            <p class="p-name">Тёмная серия</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORMS -->
+<div class="platforms">
+  <div class="platform-item"><div class="platform-icon">▶</div>YouTube Shorts</div>
+  <div class="platform-item"><div class="platform-icon">◈</div>Instagram Reels</div>
+  <div class="platform-item"><div class="platform-icon">♪</div>TikTok</div>
+  <div class="platform-item"><div class="platform-icon">✈</div>Telegram</div>
+</div>
+
+<!-- SHORTS GRID -->
+<section id="shorts">
+  <div class="section-head">
+    <p class="s-tag">Последние работы</p>
+    <h2>Shorts & Reels</h2>
+    <p>Вертикальный формат · 9:16 · готово для публикации</p>
+  </div>
+  <div class="shorts-scroll">
+    <div class="sc" onclick="openLb5(this)">
+      <div class="sc-thumb">
+        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80" alt="">
+        <div class="sc-play"><div class="sc-play-btn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="sc-type">Shorts</div>
+      </div>
+      <div class="sc-body">
+        <p class="sc-title">Золотой час · Анна</p>
+        <div class="sc-meta"><span>Портрет</span><span>1.2M 👁</span></div>
+      </div>
+    </div>
+    <div class="sc" onclick="openLb5(this)">
+      <div class="sc-thumb">
+        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80" alt="">
+        <div class="sc-play"><div class="sc-play-btn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="sc-type">Reels</div>
+      </div>
+      <div class="sc-body">
+        <p class="sc-title">Арт-серия «Тень»</p>
+        <div class="sc-meta"><span>Арт</span><span>870K 👁</span></div>
+      </div>
+    </div>
+    <div class="sc" onclick="openLb5(this)">
+      <div class="sc-thumb">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80" alt="">
+        <div class="sc-play"><div class="sc-play-btn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="sc-type">TikTok</div>
+      </div>
+      <div class="sc-body">
+        <p class="sc-title">Летний фестиваль</p>
+        <div class="sc-meta"><span>Репортаж</span><span>560K 👁</span></div>
+      </div>
+    </div>
+    <div class="sc" onclick="openLb5(this)">
+      <div class="sc-thumb">
+        <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80" alt="">
+        <div class="sc-play"><div class="sc-play-btn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="sc-type">Shorts</div>
+      </div>
+      <div class="sc-body">
+        <p class="sc-title">Катя · Бренд</p>
+        <div class="sc-meta"><span>Портрет</span><span>340K 👁</span></div>
+      </div>
+    </div>
+    <div class="sc" onclick="openLb5(this)">
+      <div class="sc-thumb">
+        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&q=80" alt="">
+        <div class="sc-play"><div class="sc-play-btn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="sc-type">Reels</div>
+      </div>
+      <div class="sc-body">
+        <p class="sc-title">Концепт «Красный»</p>
+        <div class="sc-meta"><span>Арт</span><span>290K 👁</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section id="video">
+  <div class="video-full">
+    <div class="vf-text-side">
+      <p class="vf-tag">Видео</p>
+      <h2>Showreel и видеопроекты</h2>
+      <p>Слева — горизонтальное видео (YouTube, лукбук, репортаж). Справа — Shorts в формате телефона. Вставьте свои ссылки.</p>
+      <p style="font-size:0.82rem;color:rgba(255,255,255,0.3);">Поддерживаются YouTube, YouTube Shorts и .mp4 файлы.</p>
+    </div>
+    <div class="vf-video-side">
+      <!-- Horizontal video -->
+      <div class="video-box">
+        <div class="video-box-label">Showreel · Горизонтальный <span>16:9</span></div>
+        <div class="video-container-h" id="hVc">
+          <div class="video-placeholder-h" onclick="triggerH()">
+            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=60" alt="">
+            <div class="vph-play"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+        </div>
+        <div class="vbox-input-row">
+          <input type="text" id="hUrl" placeholder="YouTube ссылка или .mp4...">
+          <button onclick="embedH()">Вставить</button>
+        </div>
+      </div>
+      <!-- Vertical/shorts video -->
+      <div class="video-box">
+        <div class="video-box-label">Shorts · Вертикальный <span>9:16</span></div>
+        <div class="video-container-v">
+          <div class="vertical-phone">
+            <div class="vp-s" id="vVc">
+              <div class="vp-s-ph" onclick="triggerV()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1"/></svg>
+                <p>Вставьте Shorts-ссылку</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vbox-input-row">
+          <input type="text" id="vUrl" placeholder="youtube.com/shorts/...">
+          <button onclick="embedV()">Shorts</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT + CONTACT -->
+<div class="split-section" id="about">
+  <div class="split-about">
+    <span class="s-tag">Обо мне</span>
+    <h2>Эмилия Сорокина</h2>
+    <p>Снимаю фото и вертикальное видео — Shorts, Reels, TikTok. Понимаю алгоритмы и делаю контент, который хочется смотреть.</p>
+    <p>7 лет опыта, более 200 вертикальных роликов, суммарно 5M+ просмотров. Работаю с блогерами, брендами и обычными людьми, которым важен результат.</p>
+    <div class="creator-tags">
+      <span class="c-tag">Shorts</span>
+      <span class="c-tag">Reels</span>
+      <span class="c-tag">Портрет</span>
+      <span class="c-tag">Репортаж</span>
+      <span class="c-tag">Арт-серии</span>
+      <span class="c-tag">Ретушь</span>
+      <span class="c-tag">Цвет</span>
+    </div>
+    <div class="avail-row">
+      <div class="avail-green"></div>
+      <span><strong>Открыта для новых проектов</strong> · Отвечаю в тот же день</span>
+    </div>
+  </div>
+  <div class="split-contact" id="contact">
+    <span class="s-tag">Написать</span>
+    <h2>Обсудим проект?</h2>
+    <form class="cf5" onsubmit="handleCf5(event)">
+      <input type="text" placeholder="Имя" required>
+      <input type="email" placeholder="Email или Telegram" required>
+      <textarea placeholder="Shorts, Reels, портрет — расскажите о задаче..."></textarea>
+      <button type="submit">Отправить заявку</button>
+    </form>
+    <div class="direct-links">
+      <a href="mailto:hello@emily.photo" class="dl-link">
+        <span class="dl-icon">✉</span> hello@emily.photo
+      </a>
+      <a href="tel:+79991234567" class="dl-link">
+        <span class="dl-icon">☎</span> +7 999 123-45-67
+      </a>
+      <a href="#" class="dl-link">
+        <span class="dl-icon">◈</span> @emily.photo
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2024 Emily Sorokina</span>
+  <span>Shorts · Reels · Photo · Москва</span>
+</footer>
+
+<div class="lb" id="lb5" onclick="closeLb5(event)">
+  <button class="lb-x">&times;</button>
+  <img id="lbImg5" src="" alt="">
+</div>
+
+<script>
+  function openLb5(el) {
+    document.getElementById('lbImg5').src = el.querySelector('img').src;
+    document.getElementById('lb5').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb5(e) {
+    if (!e || e.target.tagName !== 'IMG') {
+      document.getElementById('lb5').classList.remove('on');
+      document.body.style.overflow = '';
+    }
+  }
+  document.querySelector('#lb5 .lb-x').onclick = () => closeLb5();
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb5(); });
+
+  function getYtId(url) {
+    const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&\s?]+)/);
+    return m ? m[1] : null;
+  }
+
+  function triggerH() { const v = document.getElementById('hUrl').value.trim(); if (v) embedH(); else document.getElementById('hUrl').focus(); }
+  function triggerV() { document.getElementById('vUrl').focus(); }
+
+  function embedH() {
+    const raw = document.getElementById('hUrl').value.trim(); if (!raw) return;
+    const vc = document.getElementById('hVc');
+    const id = getYtId(raw);
+    if (id) vc.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allowfullscreen allow="autoplay"></iframe>`;
+    else if (raw.match(/\.(mp4|webm|ogg)$/i)) vc.innerHTML = `<video src="${raw}" controls autoplay></video>`;
+    else alert('YouTube или .mp4');
+  }
+
+  function embedV() {
+    const raw = document.getElementById('vUrl').value.trim(); if (!raw) return;
+    const sc = document.getElementById('vVc');
+    const id = getYtId(raw);
+    if (id) sc.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allowfullscreen allow="autoplay"></iframe>`;
+    else if (raw.match(/\.(mp4|webm|ogg)$/i)) sc.innerHTML = `<video src="${raw}" controls autoplay style="width:100%;height:100%;object-fit:cover;"></video>`;
+    else alert('YouTube Shorts или .mp4');
+  }
+
+  function handleCf5(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Отправлено ✓';
+    btn.style.background = '#16a34a';
+    setTimeout(() => { btn.textContent = 'Отправить заявку'; btn.style.background = ''; e.target.reset(); }, 3000);
+  }
+</script>
+</body>
+</html>
